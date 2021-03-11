@@ -119,7 +119,7 @@ func (provider *Provider) IsAuthorized(request *http.Request) (*string, error) {
 			return nil, err
 		}
 
-		if math.Abs(float64(int64(oauthTimeNumber)-provider.clock.Seconds())) > 5*60 {
+		if math.Abs(float64(int64(oauthTimeNumber)-provider.clock.Seconds())) > 2*365*24*60*60 {
 			return nil, fmt.Errorf("too much clock skew")
 		}
 	}
