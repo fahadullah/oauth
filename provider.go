@@ -2,6 +2,7 @@ package oauth
 
 import (
 	"bytes"
+	"errors"
 	"fmt"
 	"math"
 	"net/http"
@@ -9,6 +10,8 @@ import (
 	"strconv"
 	"strings"
 )
+
+var ErrClockSkew = errors.New("too much clock skew")
 
 //
 // OAuth1 2-legged provider
@@ -120,7 +123,7 @@ func (provider *Provider) IsAuthorized(request *http.Request) (*string, error) {
 		}
 
 		if math.Abs(float64(int64(oauthTimeNumber)-provider.clock.Seconds())) > 5*60 {
-			return nil, fmt.Errorf("too much clock skew")
+			return nil, ErrClockSkew
 		}
 	}
 
